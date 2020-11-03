@@ -4,10 +4,6 @@ const morgan = require('morgan');
 
 const bodyParser = require('body-parser');
 
-const fs = require("fs");
-
-//const urls = require('./db/urls');
-
 const app = express();
 
 app.use(morgan('tiny'));
@@ -16,11 +12,7 @@ app.use(bodyParser.json());
 
 app.use(express.static('./public'));
 
-var data = fs.readFileSync('input.txt');
-
-console.log("data: " + data.toString());
-
-var sites = JSON.parse(data.toString());//{ "name":"runoob" , "url":"https://www.runoob.com" };
+var sites = { "name":"runoob" , "url":"https://www.runoob.com" };
 
 app.get('/:name', (req, res) => {
 
@@ -59,20 +51,6 @@ app.post('/api/puny', (req, res) => {
       } else { 
 
           sites[req.body.name]=req.body.url;
-
-          var last = JSON.stringify(sites);
-
-          fs.writeFile('input.txt',last,  function(err) {
-
-              if (err) {
-
-                  return console.error(err);
-
-              }
-
-              console.log("write ok!");
-
-          });
 
           res.json(req.body.url);
 
